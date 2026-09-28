@@ -1,0 +1,16 @@
+# Case reports about real, identifiable people — never publish
+SESSION_REPORT.md
+reports/
+*.report.md
+
+# Saved source pages / scraped data
+*.html
+*_files/
+*.xml
+*.json.out
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+.env
