@@ -1,0 +1,37 @@
+[
+  {
+    "id": "hidden-co-first",
+    "skills": ["researcher-audit"],
+    "query": "Evaluate the third author of DOI_A against a PhD year 1 baseline.",
+    "setup": "DOI_A: an open-access paper where the target is listed third but is a †-marked co-first author. Every OpenAlex/Crossref position field reads 'middle'.",
+    "expected_behavior": [
+      "Reports the target as co-first on DOI_A, citing the full-text footnote",
+      "Does not describe the target as 'only a middle author' based on author_position",
+      "Marks co-first status of the target's paywalled papers as unknown, not as 'no'"
+    ]
+  },
+  {
+    "id": "common-name-merge-and-split",
+    "skills": ["researcher-audit"],
+    "query": "Evaluate the first author of DOI_B.",
+    "setup": "The target has a very common Chinese name. The OpenAlex ID attached to DOI_B merges 100+ works by other people; the target's own papers are split across several IDs. The target has an ORCID that is not linked from Crossref.",
+    "expected_behavior": [
+      "Runs --diagnose-id or otherwise detects the merged ID and does not report its citation count or h-index",
+      "Finds the ORCID via name + affiliation search and confirms it by overlap with DOI_B",
+      "Builds the paper set from ORCID and/or a PI anchor, and reports the split IDs",
+      "Flags any paper not claimed on ORCID as weaker attribution"
+    ]
+  },
+  {
+    "id": "transient-errors-and-count-mismatch",
+    "skills": ["researcher-audit"],
+    "query": "You found 6 papers but the person has 8. Recheck.",
+    "setup": "Europe PMC intermittently returns 503. One missing item is a preprint claimed only on ORCID; another is from the target's previous institution, without the PI.",
+    "expected_behavior": [
+      "Re-runs when fetch_error appears instead of reporting those papers as not open access",
+      "Finds the preprint through ORCID rather than by loosening institution filters",
+      "Adds the previous-institution paper explicitly and labels its attribution as unconfirmed if it is not on ORCID",
+      "States which papers remain unverified"
+    ]
+  }
+]

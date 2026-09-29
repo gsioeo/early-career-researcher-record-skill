@@ -1,0 +1,7 @@
+interface:
+  display_name: "Researcher Audit"
+  short_description: "Audit an early-career researcher's public record"
+  default_prompt: "Use $researcher-audit to evaluate the first author of DOI 10.xxxx/xxxx against a PhD year 1 baseline."
+
+policy:
+  allow_implicit_invocation: true
